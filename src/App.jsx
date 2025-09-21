@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./UI/Home";
 import Menu from "./Features/Menu/Menu";
-import { loader as menuLoader } from "./Utilities/helpers";
+import Error from "./UI/Error";
 import Cart from "./Features/Cart/Cart";
 import CreateOrder from "./Features/Order/CreateOrder";
 import Order from "./Features/Order/Order";
 import AppLayout from "./UI/AppLayout";
+import { createOrder } from "./services/apiRestaurant";
 
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
@@ -18,7 +20,8 @@ const router = createBrowserRouter([
       {
         path: "/menu",
         element: <Menu />,
-        loader: menuLoader,
+        loader: Menu.loader,
+        errorElement: <Error />,
       },
       {
         path: "/cart",
@@ -27,10 +30,13 @@ const router = createBrowserRouter([
       {
         path: "/order/new",
         element: <CreateOrder />,
+        action: CreateOrder.action,
       },
       {
         path: "/order/:orderId",
         element: <Order />,
+        loader: Order.loader,
+        errorElement: <Error />,
       },
     ],
   },
